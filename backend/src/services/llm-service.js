@@ -155,44 +155,26 @@ class LLMService {
     }
 
     parseEmailResponse(content) {
-        // Try to extract subject and body from the response
         const lines = content.trim().split('\n').filter(line => line.trim());
 
-        let subject = '';
-        let body = '';
+        // Look for double newline as subject/body separator
+        const doubleNewlineIndex = content.indexOf('\n\n');
 
-        for (let i = 0; i < lines.length; i++) {
-            const line = lines[i].trim();
-
-            if (line.toLowerCase().includes('subject:') || line.toLowerCase().startsWith('subject:')) {
-                subject = line.replace(/^subject:\s*/i, '').trim();
-            } else if (line.toLowerCase().includes('body:') || line.toLowerCase().startsWith('body:')) {
-                // Everything after "Body:" is the body
-                body = lines.slice(i).join('\n').replace(/^body:\s*/i, '').trim();
-                break;
-            } else if (!subject && i === 0) {
-                // If first line and no "Subject:" prefix, assume it's the subject
-                subject = line;
-            } else if (subject && !body) {
-                // If we have subject but no body, rest is body
-                body = lines.slice(i).join('\n').trim();
-                break;
-            }
+        if (doubleNewlineIndex !== -1) {
+            // We have a clear separator
+            const subject = content.substring(0, doubleNewlineIndex).trim();
+            const body = content.substring(doubleNewlineIndex + 2).trim();
+            return { subject, body };
+        } else if (lines.length === 1) {
+            // Only one line - it's the subject
+            return { subject: lines[0], body: '' };
+        } else {
+            // Fallback to first line as subject, rest as body
+            return {
+                subject: lines[0] || '',
+                body: lines.slice(1).join('\n').trim()
+            };
         }
-
-        // Fallback parsing if structured parsing fails
-        if (!subject || !body) {
-            const parts = content.split('\n\n');
-            if (parts.length >= 2) {
-                subject = parts[0].replace(/^subject:\s*/i, '').trim();
-                body = parts.slice(1).join('\n\n').replace(/^body:\s*/i, '').trim();
-            } else {
-                subject = lines[0] || 'Generated Email';
-                body = lines.slice(1).join('\n') || content;
-            }
-        }
-
-        return { subject, body };
     }
 
     async generateEmail(prompt, to = '') {
@@ -316,8 +298,8 @@ class LLMService {
 
         // Handle different email formats
         let name = localPart
-            .replace(/[._-]/g, ' ') 
-            .replace(/\d+/g, '')   
+            .replace(/[._-]/g, ' ')
+            .replace(/\d+/g, '')
             .trim();
 
         // Capitalize each word

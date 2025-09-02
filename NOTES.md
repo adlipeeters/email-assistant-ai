@@ -19,6 +19,5 @@ Multi-provider LLM support (OpenAI(gpt-4o-mini), Anthropic(claude-3-5-haiku-2024
 - Error handling
 - Ability to choose desired model in user session
 - Unit tests
-- Stream improvements (Avoid visible stream data modification for a cleaner user experience)
 - Frontend: Responsive UI ...
 - and many more...
