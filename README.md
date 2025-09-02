@@ -11,10 +11,7 @@ ANTHROPIC_API_KEY="your-anthropic-key"
 GOOGLE_API_KEY="your-google-key"
 PORT=3001
 
-# 3. Current Implementation:
-Multi-provider LLM support (OpenAI(gpt-4o-mini), Anthropic(claude-3-5-haiku-20241022), Google(gemini-1.5-flash)). Claude and gemini are the fastest (I recommend to use claude). In ai-controller.js you can configure desired model: const llmService = new LLMService('claude');
-
-# 4 Setup
+# 3 Setup
 1. `cd frontend` - Go to the frontend folder
 2. `yarn install` - Install the dependencies
 3. `yarn dev` - Start the development server (http://localhost:3000)
@@ -22,6 +19,10 @@ Multi-provider LLM support (OpenAI(gpt-4o-mini), Anthropic(claude-3-5-haiku-2024
 5. `yarn install` - Install the dependencies
 6. `yarn migrate` - Run the knex db migrations
 7. `yarn dev` - Start the development server (http://localhost:3001)
+
+# 4. Current Implementation:
+Multi-provider LLM support (OpenAI(gpt-4o-mini), Anthropic(claude-3-5-haiku-20241022), Google(gemini-1.5-flash)). Claude and gemini are the fastest (I recommend to use claude). In ai-controller.js you can configure desired model: const llmService = new LLMService('claude');
+
 
 # 5. Next Steps (Improvements):
 - Typescript support for BE + FE
