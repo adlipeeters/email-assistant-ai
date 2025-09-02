@@ -1,0 +1,1 @@
+![alt text](https://github.com/adlipeeters/email-assistant-ai/blob/main/architecture-diagram.png?raw=true)
